@@ -123,3 +123,93 @@ const Header = props => {
 	);
 };
 ```
+
+## Typechecking With PropTypes (Section 3, lecture 17)
+
+### Setting default props
+
+Default props are like default parameters in JavaScript, where we basically set a default value for a specific prop, so if anything happens to the value we set to the prop, we have this as a fallback value. A good candidate for a default prop is our header, since we would like to input a default value to be displayed in any way.
+
+We go to the `Header.js` file and under the `Header` function, we set an object `Header.defaultProps` and inside of it, we pass `branding` and give it its default value, in our case we input `My App`.
+
+```js
+const Header = props => {
+	const { branding } = props;
+	return (
+		<div>
+			<h1>{branding}</h1>
+		</div>
+	);
+};
+
+Header.defaultProps = {
+	branding: 'My App',
+};
+```
+
+As long as we have a value for our prop, we won't see the default prop value, as the value we input to the prop overrides it, even an empty value, but if we are to remove the the entire prop we set in the `App.js`, we will see that the `<h1>` is changed to `My App`.
+
+### Setting PropTypes
+
+PropTypes are for validating the prop types we pass in, in order to have consistant data and to avoid unexpected errors that happen due to a gap between the expected prop type and the passed value.
+
+To do that, we will first need to `import` a property called `PropTypes` from `prop-types`. With the snippets plugin we use, we can simply pass `impt`, and it will pass on the `import` request.
+
+```js
+import PropTypes from 'prop-types';
+```
+
+Next we go down under the `Header` function, above or bellow the `defaultProps` function, and pass on `Header.propTypes` object (prop with a lowcase 'p'). Inside of it we pass the prop name, and as for the value we pass the `PropType` property and then input the data type we expect the prop result to be, like `.string` and then add `.isRequired` to add the option to receive a warning in the React dev tools in case the wrong type is passed as the value.
+
+```js
+class Contact extends Component {
+	render() {
+		const { name, email, phone } = this.props;
+		return (
+			<div>
+				<h4>{name}</h4>
+				<ul>
+					<li>{email}</li>
+					<li>{phone}</li>
+				</ul>
+			</div>
+		);
+	}
+}
+Contact.propTypes = {
+	name: PropTypes.string.isRequired,
+	email: PropTypes.string.isRequired,
+	phone: PropTypes.number.isRequired,
+};
+```
+
+If we are to pass on the a value that is different than the expected value, or change the existing value type to a different one, we will receive a warning in the dev tools console that states that we have a different value than what was expected.
+
+### Setting `PropTypes` in the compinenet function
+
+It is also possible to pass the PropTypes object inside the component function, as long as we set it as a `static` method. We can choose one way or the other. The same thing could be done with `defaultProps`.
+
+```js
+class Contact extends Component {
+	static propTypes = {
+		name: PropTypes.string.isRequired,
+		email: PropTypes.string.isRequired,
+		phone: PropTypes.number.isRequired,
+	};
+
+	render() {
+		const { name, email, phone } = this.props;
+		return (
+			<div>
+				<h4>{name}</h4>
+				<ul>
+					<li>{email}</li>
+					<li>{phone}</li>
+				</ul>
+			</div>
+		);
+	}
+}
+
+export default Contact;
+```

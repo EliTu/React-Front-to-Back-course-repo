@@ -179,7 +179,7 @@ class Contact extends Component {
 Contact.propTypes = {
 	name: PropTypes.string.isRequired,
 	email: PropTypes.string.isRequired,
-	phone: PropTypes.number.isRequired,
+	phone: PropTypes.string.isRequired,
 };
 ```
 
@@ -194,7 +194,7 @@ class Contact extends Component {
 	static propTypes = {
 		name: PropTypes.string.isRequired,
 		email: PropTypes.string.isRequired,
-		phone: PropTypes.number.isRequired,
+		phone: PropTypes.string.isRequired,
 	};
 
 	render() {

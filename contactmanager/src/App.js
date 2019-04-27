@@ -7,8 +7,17 @@ import Header from './componenets/Header';
 function App() {
 	return (
 		<div className="App">
-			<Header />
-			<Contact />
+			<Header branding="Contact Manager" />
+			<Contact
+				name="Aegon Targeryan"
+				email="jonsnow@gmail.com"
+				phone="123-456-321"
+			/>
+			<Contact
+				name="Arya Stark"
+				email="aryas@gmail.com"
+				phone="123-456-789"
+			/>
 		</div>
 	);
 }

@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD010 -->
+
 # Section 3
 
 ## Working with Props (Section 3, lecture 17)
@@ -68,7 +70,7 @@ class Contact extends Component {
 }
 ```
 
-We reload the page and get the same exact result as we had before with the hardcoded data. We look at the React dev tools and see the exsiting props has been updated. We can also go ahead and create another component with different props values in the `App.js` file, this way we will have 2 different components with 2 different prop values.
+We reload the page and get the same exact result as we had before with the hardcoded data. We look at the React dev tools and see the existing props has been updated. We can also go ahead and create another component with different props values in the `App.js` file, this way we will have 2 different components with 2 different prop values.
 
 ```js
 function App() {
@@ -111,7 +113,7 @@ class Contact extends Component {
 }
 ```
 
-In the `Header.js` we do the same thing basically, we destructure `branding` out of `props` (this time no need for the `this` keyword), like this: `const { branding } = Them we apply it in the`return` statement data.
+In the `Header.js` we do the same thing basically, we destructure `branding` out of `props` (this time no need for the `this` keyword), like this: `const { branding } =`,Then we apply it in the `return` statement data.
 
 ```js
 const Header = props => {

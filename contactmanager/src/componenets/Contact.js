@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Contact extends Component {
-	state = {};
+	state = {
+		isContactOpen: false,
+	};
 
-	handleClick = id => {
-		console.log(id);
+	handleClick = () => {
+		this.setState({
+			isContactOpen: !this.state.isContactOpen,
+		});
 	};
 
 	render() {
 		const { name, email, phone } = this.props.contact;
+		const { isContactOpen } = this.state;
+
 		return (
 			<div className="card card-body mb-3">
 				<h4>
@@ -18,11 +24,13 @@ class Contact extends Component {
 						onClick={this.handleClick}
 						className="fas fa-sort-down"
 					/>
-				</h4>
-				<ul className="list-group">
-					<li className="list-group-item">{email}</li>
-					<li className="list-group-item">{phone}</li>
-				</ul>
+				</h4>{' '}
+				{isContactOpen && (
+					<ul className="list-group">
+						<li className="list-group-item">{email}</li>
+						<li className="list-group-item">{phone}</li>
+					</ul>
+				)}
 			</div>
 		);
 	}

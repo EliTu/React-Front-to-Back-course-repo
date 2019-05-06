@@ -18,7 +18,7 @@ class Contact extends Component {
 
 	render() {
 		const {
-			contact: { name, email, phone, id },
+			contact: { name, email, phone },
 			handleDeleteClick,
 		} = this.props;
 		const { isContactOpen } = this.state;
@@ -39,7 +39,7 @@ class Contact extends Component {
 							float: 'right',
 							color: 'tomato',
 						}}
-						onClick={() => handleDeleteClick(id)}
+						onClick={() => handleDeleteClick()}
 					/>
 				</h4>{' '}
 				{isContactOpen && (

@@ -6,14 +6,21 @@ class Contact extends Component {
 		isContactOpen: false,
 	};
 
-	handleClick = () => {
+	handleOpenClick = () => {
 		this.setState({
 			isContactOpen: !this.state.isContactOpen,
 		});
 	};
 
+	// handleDeleteClick = () => {
+	// 	this.props.handleDeleteClick();
+	// };
+
 	render() {
-		const { name, email, phone } = this.props.contact;
+		const {
+			contact: { name, email, phone, id },
+			handleDeleteClick,
+		} = this.props;
 		const { isContactOpen } = this.state;
 
 		return (
@@ -21,14 +28,24 @@ class Contact extends Component {
 				<h4>
 					{name}{' '}
 					<i
-						onClick={this.handleClick}
+						onClick={this.handleOpenClick}
 						className="fas fa-sort-down"
+						style={{ cursor: 'pointer', marginLeft: '0.5rem' }}
+					/>
+					<i
+						className="fas fa-times"
+						style={{
+							cursor: 'pointer',
+							float: 'right',
+							color: 'tomato',
+						}}
+						onClick={() => handleDeleteClick(id)}
 					/>
 				</h4>{' '}
 				{isContactOpen && (
 					<ul className="list-group">
-						<li className="list-group-item">{email}</li>
-						<li className="list-group-item">{phone}</li>
+						<li className="list-group-item">Email: {email}</li>
+						<li className="list-group-item">Phone: {phone}</li>
 					</ul>
 				)}
 			</div>
@@ -38,6 +55,7 @@ class Contact extends Component {
 
 Contact.propTypes = {
 	contact: PropTypes.object.isRequired,
+	handleDeleteClick: PropTypes.func.isRequired,
 };
 
 export default Contact;

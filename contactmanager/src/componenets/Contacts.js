@@ -16,8 +16,10 @@ export class Contacts extends Component {
 	render() {
 		return (
 			<Consumer>
+
 				{value => {
 					const { contacts } = value;
+
 					return (
 						<React.Fragment>
 							{contacts.map(contact => (
@@ -31,7 +33,9 @@ export class Contacts extends Component {
 							))}
 						</React.Fragment>
 					);
+					
 				}}
+
 			</Consumer>
 		);
 	}

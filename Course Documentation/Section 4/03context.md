@@ -95,3 +95,4 @@ Now, we can try and click on the delete button in the UI, upon a click the conta
 If this was embedded 3 levels down, this whole process would've been much more complicated and annoying. Or another scenario, is if we wanted to share `state` between componenets, it would be very hard. In this scenario, state manager tools come in, like Context and Redux. Though for smaller apps Context could be better, while in larger apps Redux is the way to go.
 
 ## Using The Context API & Provider State(Section 4, lecture 25)
+

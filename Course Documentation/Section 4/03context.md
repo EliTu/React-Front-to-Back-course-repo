@@ -96,3 +96,179 @@ If this was embedded 3 levels down, this whole process would've been much more c
 
 ## Using The Context API & Provider State(Section 4, lecture 25)
 
+In the last lecture we've the delete functionality, but it was rather difficult since we had to set the `state` from the `Contacts` componenet in order to be able to implement a removal of a singal `Contact` component, basically propagating up to the parent element.
+
+In order to make this process easier, we will implement the Context API, so we could have a single place where we could store our `state` and easily share it between different components.
+
+### Creating the Context
+
+First we will create a separate file to hold the content of the Context API, outside of the `componenets` folder, but inside the `src` folder. We'll create a file called `context.js`.
+
+We can look at the Context as our store, or a provider, with an actual class named 'Provider', which we will wrap around the entire app inside thr `App.js` file.
+
+We will first `import React` and `{Component}` as we ususally do, and then go ahead and initialize Context by declaring `const Context = React.createContext()`.
+
+```js
+import React, { Component } from 'react';
+
+const Context = React.createContext();
+```
+
+Now we can create a class based componenet which we will call `Provider`, and it will be a standard React component, and inside we will place our 'global' `state`, which we want to pull out of `Contacts` and place it within the `Provider` component.
+
+```js
+export class Provider extends Component {
+	state = {
+		contacts: [
+			{
+				id: 1,
+				name: 'Nickolas Cage',
+				email: 'nicksc@gmail.com',
+				phone: '555-555-5555',
+			},
+			{
+				id: 2,
+				name: 'Danny DeVito',
+				email: 'dand@gmail.com',
+				phone: '555-222-5555',
+			},
+			{
+				id: 3,
+				name: 'William DeFoe',
+				email: 'willied@gmail.com',
+				phone: '555-555-3366',
+			},
+		],
+	};
+}
+```
+
+This component will also hold a `render` function, which will `return` a JSX object with the name `<Context.Provider>`, as a prop we will pass `value` and it can take anything that we want to be available throughout our application as a value, and so in our case we will pass the `this.state` so we can have access to the `state` from anywhere we would like to consume it. Between the `<Context.Provider>` tags we will pass `{this.props.children}`.
+
+```js
+export class Provider extends Component {
+	state = {
+		contacts: [
+			{
+				id: 1,
+				name: 'Nickolas Cage',
+				email: 'nicksc@gmail.com',
+				phone: '555-555-5555',
+			},
+			{
+				id: 2,
+				name: 'Danny DeVito',
+				email: 'dand@gmail.com',
+				phone: '555-222-5555',
+			},
+			{
+				id: 3,
+				name: 'William DeFoe',
+				email: 'willied@gmail.com',
+				phone: '555-555-3366',
+			},
+		],
+	};
+
+	render() {
+		return (
+			<Context.Provider value={this.state}>
+				{this.props.children}
+			</Context.Provider>
+		);
+	}
+}
+```
+
+### Exporting a Consumer
+
+At the end, we would like to `export` a Consumer, which is what will be used inside any component that we want to access the `state` or any action methods, that will be used to set the `state` of the Context.
+
+```js
+export const Consumer = Context.Consumer;
+```
+
+### Importing and inputing the `Provider` in the `App.js` file
+
+We will first use `import` to get access to the `Provider` class.
+
+```js
+import { Provider } from './context';
+```
+
+Now we will have to wrap the entire app, including the main parent `<div>` tags, with the `<Provider>` component tags.
+
+```js
+function App() {
+	return (
+		<Provider>
+			<div className="App">
+				<Header branding="Contact Manager" />
+				<div className="container">
+					<Contacts />
+				</div>
+			</div>
+		</Provider>
+	);
+}
+```
+
+### Importing and inputing the `Consumer` in the component
+
+Now that we have settled the `Provider` in the main App component, now we can use the `Consumer` in the different app components to allow them access the state. We would `import` the `Consumer` into `Contacts`, where the state used to live in, and so we will grant that component access to `state` again.
+
+```js
+import { Consumer } from '../context';
+```
+
+What we would render from the component will basically remain the same, the only thing we will change in the component is how we access the `state` and get the contacts out of the state. The `return` of the `render` function will return the `Consumer` tag, inside of it we will have an expression that returns a `value`, which is the same `value` prop we have in the `Context.Provider`, which we set to `this.state`, and so this will give us an access to the value of `value`, the state that we put in the Context, and so we would be able to access `value.contacts`, for example. To get an easier access to the contacts, we will fist destructure it out of `value`, right before the `return` expression.
+
+```js
+render() {
+		return (
+			<Consumer>
+
+				{value => {
+					const { contacts } = value;
+
+					return ();
+				}}
+			</Consumer>
+		);
+	}
+```
+
+Now what we would like to `return` is basically the whole fragment, and so we will put it all back into the `return` statement inside of the `<Consumer>` tag.
+
+```js
+	render() {
+		return (
+			<Consumer>
+
+				{value => {
+					const { contacts } = value;
+
+					return (
+						<React.Fragment>
+							{contacts.map(contact => (
+								<Contact
+									key={contact.id}
+									contact={contact}
+									handleDeleteClick={() =>
+										this.deleteContact(contact.id)
+									}
+								/>
+							))}
+						</React.Fragment>
+					);
+
+				}}
+
+			</Consumer>
+		);
+	}
+```
+
+Now as we reload the app, the contacts come back rendered to the page as they were, meaning that the component does read the state that is passed to the Context. Though, if we will try to delete one of the contacts, the app would break, and that is because we will also need refactor the `handleDeleteClick` function, as it still operates as if we take the `state` of the `Contacts` component, which isn't there anymore. In order to manipulate the `state` of the COntext, we will have to create a Reducer function with actions, which are basically manipulate the state, and the Reducer would use these to handle the change of the state.
+
+## Adding a Context Reducer for Actions (Section 4, lecture 26)
